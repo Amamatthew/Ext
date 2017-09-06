@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	   <meta charset="UTF-8" />
+	   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+       <title>Ext JS-Use of global variables</title>
+	   <meta name="viewport" content="width=device-width, initial-scale=1">
+       <link rel="stylesheet" type="text/css" href="http://cdn.sencha.com/ext/gpl/5.0.0/build/packages/ext-theme-neptune/build/resources/ext-theme-neptune-all.css">
+       <script type="text/javascript" src="http://cdn.sencha.com/ext/gpl/5.0.0/build/ext-all.js"></script> 
+       <script type="text/javascript" src="http://cdn.sencha.com/ext/gpl/5.0.0/build/packages/ext-theme-neptune/build/ext-theme-neptune.js"></script>
+	   <script type="text/javascript" src="http://cdn.sencha.com/ext/gpl/5.0.0/packages/ext-locale/overrides/zh_CN/ext-locale-zh_CN.js"></script>
+	   <style></style>
+       <script type="text/javascript">
+		Ext.onReady(function(){
+		//  If you want to manually identify each component you can simply replace the ‘id’ with ‘itemId’ as shown in example 6B. This resolves the name conflict, 
+		
+		//  Example 6B. GOOD: Create components with an ‘itemId’.
+			xtype : 'toolbar',
+			itemId : 'picturetoolbar',
+			items : [{
+				text : 'Save Picture',
+				itemId : 'savebutton'
+			}]
+		 
+			// somewhere else in the code we have another component with an itemId of 'savebutton'
+			xtype : 'toolbar',
+			itemId: 'ordertoolbar',
+			items : [{
+				text : 'Save Order',
+				itemId: 'savebutton'
+			}]
+			//Example 6C. GOOD: Referencing components by 'itemId'
+			var pictureSaveButton = Ext.ComponentQuery.query('#picturetoolbar > #savebutton')[0];
+ 
+			var orderSaveButton = Ext.ComponentQuery.query('#ordertoolbar > #savebutton')[0]; 
+ 
+			// assuming we have a reference to the “picturetoolbar” as picToolbar
+			picToolbar.down('#savebutton');
+		});
+        </script>
+    </head>
+    <body></body>
+</html>
+  

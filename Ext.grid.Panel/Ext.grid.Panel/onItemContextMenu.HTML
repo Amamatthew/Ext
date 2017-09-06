@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	   <meta charset="UTF-8" />
+	   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+       <title>一.Ext JS组件可复用菜单的最佳实践</title>
+	   <meta name="viewport" content="width=device-width, initial-scale=1">
+       <link rel="stylesheet" type="text/css" href="http://cdn.sencha.com/ext/gpl/5.0.0/build/packages/ext-theme-neptune/build/resources/ext-theme-neptune-all.css">
+       <script type="text/javascript" src="http://cdn.sencha.com/ext/gpl/5.0.0/build/ext-all.js"></script> 
+       <script type="text/javascript" src="http://cdn.sencha.com/ext/gpl/5.0.0/build/packages/ext-theme-neptune/build/ext-theme-neptune.js"></script>
+	   <script type="text/javascript" src="http://cdn.sencha.com/ext/gpl/5.0.0/packages/ext-locale/overrides/zh_CN/ext-locale-zh_CN.js"></script>
+	   <style></style>
+       <script type="text/javascript">
+		Ext.define('MyApp.view.MyGrid',{
+			extend : 'Ext.grid.Panel',
+			store : 'MyStore',
+			columns : [{...}],
+			initComponent : function(){
+				this.menu = this.buildMenu();		//初始化时创建菜单
+				this.callParent(arguments);
+				this.on({							//定义右键事件响应
+					scope : this,
+					itemcontextmenu : this.onItemContextMenu
+				});
+			},
+			//菜单构建函数
+			buildMenu : function(){
+				return Ext.create('Ext.menu.Menu',{
+					items : [{
+						text : 'Do Something'
+					}]
+				});
+			},
+			//网格销毁时菜单同时销毁
+			onDestroy : function(){
+				this.menu.destroy();
+				this.callParent(arguments);
+			},
+			//右键菜单响应函数
+			onItemContextMenu : function(view,rec,item,index,event){
+				event.stopEvent();
+				this.menu.showAt(event.getXY());
+			}
+		});
+		Ext.onReady(function(){
+
+		});
+        </script>
+    </head>
+    <body></body>
+</html>
+  

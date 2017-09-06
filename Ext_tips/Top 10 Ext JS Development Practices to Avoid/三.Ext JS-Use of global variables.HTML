@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	   <meta charset="UTF-8" />
+	   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+       <title>Ext JS-Use of global variables</title>
+	   <meta name="viewport" content="width=device-width, initial-scale=1">
+       <link rel="stylesheet" type="text/css" href="http://cdn.sencha.com/ext/gpl/5.0.0/build/packages/ext-theme-neptune/build/resources/ext-theme-neptune-all.css">
+       <script type="text/javascript" src="http://cdn.sencha.com/ext/gpl/5.0.0/build/ext-all.js"></script> 
+       <script type="text/javascript" src="http://cdn.sencha.com/ext/gpl/5.0.0/build/packages/ext-theme-neptune/build/ext-theme-neptune.js"></script>
+	   <script type="text/javascript" src="http://cdn.sencha.com/ext/gpl/5.0.0/packages/ext-locale/overrides/zh_CN/ext-locale-zh_CN.js"></script>
+	   <style></style>
+       <script type="text/javascript">
+		Ext.onReady(function(){
+		// Instead of using global variables, we will hold “properties” in a class and then reference those properties with getters and setters.
+			myLastCustomer = 123456;
+			
+		// Instead, it’s a better practice to create a class that holds properties intended to be used 'globally.'
+		Ext.define('MyApp.config.Runtime',{
+			singleton : true,
+			config : {
+				myLastCustomer : 0   // initialize to 0
+			},
+			constructor : function(config){
+				this.initConfig(config);	//能够使用getter或者是setter去存取数据
+			}
+		});	
+		
+		//应用程序当中使用全局的配置类
+		Ext.application({
+			name : 'MyApp',
+			requires : ['MyApp.config.Runtime'],
+		});
+		
+		//配置配置类当中的全局参数配置
+		MyApp.config.Runtime.setMyLastCustomer(12345);
+		
+		//配置配置类当中的全局参数查询
+		MyApp.config.Runtime.getMyLastCustomer();
+		
+		//可以用它来设置网站的baseurl。配置默认的语种
+		});
+        </script>
+    </head>
+    <body></body>
+</html>
+  

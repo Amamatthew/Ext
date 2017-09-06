@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	   <meta charset="UTF-8" />
+	   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+       <title>二.Ext JS-Monster controllers</title>
+	   <meta name="viewport" content="width=device-width, initial-scale=1">
+       <link rel="stylesheet" type="text/css" href="http://cdn.sencha.com/ext/gpl/5.0.0/build/packages/ext-theme-neptune/build/resources/ext-theme-neptune-all.css">
+       <script type="text/javascript" src="http://cdn.sencha.com/ext/gpl/5.0.0/build/ext-all.js"></script> 
+       <script type="text/javascript" src="http://cdn.sencha.com/ext/gpl/5.0.0/build/packages/ext-theme-neptune/build/ext-theme-neptune.js"></script>
+	   <script type="text/javascript" src="http://cdn.sencha.com/ext/gpl/5.0.0/packages/ext-locale/overrides/zh_CN/ext-locale-zh_CN.js"></script>
+	   <style></style>
+       <script type="text/javascript">
+
+		Ext.onReady(function(){
+		
+	   //Some developers like to break out controllers by view. 
+	   //For example, if an application had a grid and a form, there would be a controller to manage the grid and a controller to manage the form.
+	   //There is no one 'right' way to separate controller logic as long as you are consistent. 
+	   //Just remember, controllers can communicate with other controllers. 
+	   //In example 3A, you can see how to retrieve a reference to another controller and call one of its methods.
+
+	   //3A
+	   //this.getController('SomeOtherController').runSomeFunction(myParm);
+		
+	   //3B
+	   //MyApp.getApplication().fireEvent('myevent');	
+	   //Example 3B. Fire an app-level event.
+	   
+	   //3C
+	   //MyApp.getApplication().on({
+	   // myevent : doSomething
+	   //});
+	   //Example 3C. Another controller listens for the app-level event.
+	   
+		});
+        </script>
+    </head>
+    <body></body>
+</html>
+  
