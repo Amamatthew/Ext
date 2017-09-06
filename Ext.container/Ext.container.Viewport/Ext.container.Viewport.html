@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	   <meta charset="UTF-8" />
+	   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+       <title>Welcome to Ext JS!</title>
+	   <meta name="viewport" content="width=device-width, initial-scale=1">
+       <link rel="stylesheet" type="text/css" href="http://cdn.sencha.com/ext/gpl/5.0.0/build/packages/ext-theme-neptune/build/resources/ext-theme-neptune-all.css">
+       <script type="text/javascript" src="http://cdn.sencha.com/ext/gpl/5.0.0/build/ext-all.js"></script> 
+       <script type="text/javascript" src="http://cdn.sencha.com/ext/gpl/5.0.0/build/packages/ext-theme-neptune/build/ext-theme-neptune.js"></script>
+	   <script type="text/javascript" src="http://cdn.sencha.com/ext/gpl/5.0.0/packages/ext-locale/overrides/zh_CN/ext-locale-zh_CN.js"></script>
+	   <style></style>
+       <script type="text/javascript">
+		Ext.application({
+			name : 'Runner',
+			autoCreateViewport: false,
+			launch: function(){
+
+				Ext.create('Ext.container.Viewport', 
+				{
+					layout : 'fit',
+					items : [{
+						xtype    : 'grid',
+						title    : 'Sencha ExtJS - Grid Example',
+						plugins  : 'rowediting',
+						store    : {
+						  fields : [ 'runner_name', 'lap1', 'lap2', 'lap3','lap4' ],
+						  data   : [['Keshor',7,7,7,7],['Thiru',7,7,7,7],['Aravind',7,7,7,7],['Arun',7,7,7,7],['Panneer',7,7,7,7],['Bhuvanesh',7,7,7,7],['Mariselvi',7,7,7,7],['Rekha',7,7,7,7],['Anjana',7,7,7,7],['Janani',7,7,7,7],
+									['Prabhu',7,7,7,7],['Malini',7,7,7,7],['Thiyagu',7,7,7,7],['Rajesh',7,7,7,7],['Ram kumar',7,7,7,7],['Hari',7,7,7,7],['Siva',7,7,7,7],['Arul',7,7,7,7],['Sugaan',7,7,7,7],['Shyam',7,7,7,7],['Umapathi',7,7,7,7]]
+						},   
+						columns: {
+							defaults: {
+								editor : 'numberfield',
+								width  : 120
+							},
+							items: [
+								{ text: 'Runner Name', dataIndex: 'runner_name', editor: 'textfield' },
+								{ text: 'Lap 1', dataIndex: 'lap1' },
+								{ text: 'Lap 2', dataIndex: 'lap2' },
+								{ text: 'Lap 3', dataIndex: 'lap3' },
+								{ text: 'Lap 4', dataIndex: 'lap4',flex:1 }
+							]
+					   }                             
+					}]
+				});
+			}
+		});
+        </script>
+    </head>
+    <body></body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	   <meta charset="UTF-8" />
+	   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+       <title>Welcome to Ext JS!</title>
+	   <meta name="viewport" content="width=device-width, initial-scale=1">
+       <link rel="stylesheet" type="text/css" href="http://cdn.sencha.com/ext/gpl/5.0.0/build/packages/ext-theme-neptune/build/resources/ext-theme-neptune-all.css">
+       <script type="text/javascript" src="http://cdn.sencha.com/ext/gpl/5.0.0/build/ext-all.js"></script> 
+       <script type="text/javascript" src="http://cdn.sencha.com/ext/gpl/5.0.0/build/packages/ext-theme-neptune/build/ext-theme-neptune.js"></script>
+	   <script type="text/javascript" src="http://cdn.sencha.com/ext/gpl/5.0.0/packages/ext-locale/overrides/zh_CN/ext-locale-zh_CN.js"></script>
+	   <style></style>
+       <script type="text/javascript">
+		Ext.onReady(function(){
+			var panel = Ext.create('Ext.panel.Panel',{  
+					title : 'Ext.DomHelper示例',  
+					width : '280px',  
+					renderTo : Ext.getBody(),  
+					html : '<div id="div1" style="height:160px;padding:5px">原文本</div>'  
+				});  
+			Ext.DomHelper.append(Ext.get("div1"),"<br>新追加了文本",true);  
+		});
+        </script>
+    </head>
+    <body></body>
+</html>
+  

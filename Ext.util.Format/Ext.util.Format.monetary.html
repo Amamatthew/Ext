@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	   <meta charset="UTF-8" />
+	   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+       <title>Welcome to Ext JS!</title>
+	   <meta name="viewport" content="width=device-width, initial-scale=1">
+       <link rel="stylesheet" type="text/css" href="http://cdn.sencha.com/ext/gpl/5.0.0/build/packages/ext-theme-neptune/build/resources/ext-theme-neptune-all.css">
+       <script type="text/javascript" src="http://cdn.sencha.com/ext/gpl/5.0.0/build/ext-all.js"></script> 
+       <script type="text/javascript" src="http://cdn.sencha.com/ext/gpl/5.0.0/build/packages/ext-theme-neptune/build/ext-theme-neptune.js"></script>
+	   <script type="text/javascript" src="http://cdn.sencha.com/ext/gpl/5.0.0/packages/ext-locale/overrides/zh_CN/ext-locale-zh_CN.js"></script>
+	   <style></style>
+       <script type="text/javascript">
+		Ext.onReady(function(){
+			//这个函数作为属性添加到Ext
+			Ext.createUnit = function(UnitName){
+			var me=new Object();
+			if('string'===typeof(UnitName)){
+				switch(UnitName)
+					{
+					case '万':
+					  me.monetary = '万';	
+					  me.monetaryUnit = 10000; 
+					  return me;
+					  break;
+					case '百万':
+					  me.monetary = '百万';	
+					  me.monetaryUnit = 10000*100; 
+					  return me;
+					  break;
+					case '亿':
+					  me.monetary = '亿';
+					  me.monetaryUnit = 10000*10000;
+					  return me;
+					  break;
+					default:
+					  me.monetary = '';
+					  me.monetaryUnit = 1;
+					  return me;
+					}
+				}
+			}  
+  
+            if (Ext.util && Ext.util.Format) {
+			
+				//给Ext.util.Format增加格式化的成员函数，并且作为渲染函数
+				//实际项目应用当中建议override原有的Ext.util.Format类
+                Ext.apply(Ext.util.Format, {
+					monetary_Ten_Thousand : function(val) {
+						var Unit = Ext.createUnit('万');
+						if (val) {  
+							if (Unit.monetaryUnit && Unit.monetaryUnit != 1)  
+								val = val / Unit.monetaryUnit;  
+							return '<span style="color:' + (val > 0 ? 'blue' : '#C0C0C0')  
+									+ ';font-weight:bold;">' + Ext.util.Format.number(val, '0,000.00')  
+									+  Unit.monetary + '</span>';  
+						} else  
+							return '';
+					},
+					monetary_Million : function(val) {
+						var Unit = Ext.createUnit('百万');
+						if (val) {  
+							if (Unit.monetaryUnit && Unit.monetaryUnit != 1)  
+								val = val /  Unit.monetaryUnit;  
+							return '<span style="color:' + (val > 0 ? 'blue' : '#C0C0C0')  
+									+ ';font-weight:bold;">' + Ext.util.Format.number(val, '0,000.00')  
+									+  Unit.monetary + '</span>';  
+						} else  
+							return '';
+					},
+					monetary_Billion : function(val) {
+						var Unit = Ext.createUnit('亿');
+						if (val) {  
+							if (Unit.monetaryUnit && Unit.monetaryUnit != 1)  
+								val = val /  Unit.monetaryUnit;  
+							return '<span style="color:' + (val > 0 ? 'blue' : '#C0C0C0')  
+									+ ';font-weight:bold;">' + Ext.util.Format.number(val, '0,000.00')  
+									+  Unit.monetary + '</span>';  
+						} else  
+							return '';
+					}		
+				})  
+            };
+			//以上可以作为Ext.util.Format的自定义拓展渲染函数
+			
+			var store = Ext.create('Ext.data.ArrayStore',{
+						fields: ['id', 'name', 'price', 'price1','desc'],
+						data: [
+							['1', 'name1', 100087, 	1090000,	'desc1'],
+							['2', 'name2', 100098, 	1080870, 	'desc2'],
+							['3', 'name3', -103000,	-1070870, 	'desc3'],
+							['4', 'name4', 100098, 	1060870, 	'desc4'],
+							['5', 'name5', 100098, 	1050870, 	'desc5'],
+							['6', 'name6', 1000300,	1040870, 	'desc6'],
+							['7', 'name7', 100008,	1030870, 	'desc7'],
+							['8', 'name8', 100000,	1020870, 	'desc8'],
+							['9', 'name9', 100000,	1010870, 	'desc9'],
+							['10', 'name10', 100000,1000870,	'desc10']
+						]
+					});	
+			//创建网格组件	
+			var grid = Ext.create('Ext.grid.GridPanel',{
+				title: 'grid',
+				viewConfig: {forceFit: true,
+				enableTextSelection:true},	//运行通过鼠标选择Ext.grid.GridPanel内容
+				store: store,
+				columns: [
+					{header:'id', dataIndex: 'id'},
+					{header:'名称', dataIndex:'name'},
+					{header:'价格(万)', 	dataIndex:'price',renderer : Ext.util.Format.monetary_Ten_Thousand},	//自定义渲染方式
+					{header:'价格(百万)', 	dataIndex:'price1', renderer : Ext.util.Format.monetary_Million},
+					{header:'描述', dataIndex:'desc'}
+				],
+				tbar: Ext.create('Ext.toolbar.Toolbar', {
+				items: [
+						{
+							// xtype: 'button', // default for Toolbars
+							text: '添加'
+						},
+										{
+							// xtype: 'button', // default for Toolbars
+							text: '修改'
+						},
+										{
+							// xtype: 'button', // default for Toolbars
+							text: '删除'
+						}]
+				}),
+				bbar: Ext.create('Ext.panel.Panel',{
+					pageSize: 15,
+					store: store
+				})
+			});
+
+			var viewport = Ext.create('Ext.Viewport',{
+				layout: 'fit',
+				items: [grid]
+			});
+        });  
+
+        </script>
+    </head>
+    <body></body>
+</html>
+  
