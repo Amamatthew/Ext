@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	   <meta charset="UTF-8" />
+	   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+       <title>Welcome to Ext JS!</title>
+	   <meta name="viewport" content="width=device-width, initial-scale=1">
+       <link  href="https://cdn.bootcss.com/extjs/6.2.0/classic/theme-crisp/resources/theme-crisp-all.css" rel="stylesheet">
+       <script src="https://cdn.bootcss.com/extjs/6.2.0/ext-all.js"></script> 
+       <script src="https://cdn.bootcss.com/extjs/6.2.0/classic/theme-crisp/theme-crisp.js"></script>
+	   <script src="https://cdn.bootcss.com/extjs/6.2.0/classic/locale/locale-zh_CN.js"></script>
+	   <style></style>
+       <script type="text/javascript">
+		Ext.onReady(function(){
+		
+			//单个元素对象
+			var t = new Ext.Template("<div>Hello {0}.</div>");
+			t.append('some-element', ['foo']);
+			
+			//多个对象元素
+			var t = new Ext.Template([
+				'<div name="{id}">',
+					'<span class="{cls}">{name:trim} {value:ellipsis(10)}</span>',
+				'</div>',
+			]);
+			t.compile();
+			t.append('some-element', {id: 'myid', cls: 'myclass', name: 'foo', value: 'bar'});
+		});
+        </script>
+    </head>
+    <body></body>
+</html>

@@ -3,7 +3,7 @@
     <head>
 	   <meta charset="UTF-8" />
 	   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-       <title>五.Ext JS-Unreliable referencing of components</title>
+       <title>Welcome to Ext JS!</title>
 	   <meta name="viewport" content="width=device-width, initial-scale=1">
        <link rel="stylesheet" type="text/css" href="http://cdn.sencha.com/ext/gpl/5.0.0/build/packages/ext-theme-neptune/build/resources/ext-theme-neptune-all.css">
        <script type="text/javascript" src="http://cdn.sencha.com/ext/gpl/5.0.0/build/ext-all.js"></script> 
@@ -12,28 +12,10 @@
 	   <style></style>
        <script type="text/javascript">
 		Ext.onReady(function(){
-		var window = 
-		// myToolbar下itemId为 'savebutton'的组件
-			xtype : 'toolbar',
-			itemId: 'ordertoolbar',
-			items : [{
-				text : 'Save Order',
-				itemId: 'savebutton'
-			}]
-			
-		//不好的组件引用方法
-		var mySaveButton = myToolbar.items.getAt(2);
- 
-		var myWindow = myToolbar.ownerCt;
-		
-		//正确组件引用
-		var mySaveButton = myToolbar.down('savebutton');    // searching against itemId
- 
-		var myWindow = myToolbar.up('window');		
+	
 		
 		});
         </script>
     </head>
     <body></body>
 </html>
-  

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	   <meta charset="UTF-8" />
+	   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+       <title>Welcome to Ext JS!</title>
+	   <meta name="viewport" content="width=device-width, initial-scale=1">
+       <link  href="https://cdn.bootcss.com/extjs/6.2.0/classic/theme-crisp/resources/theme-crisp-all.css" rel="stylesheet">
+       <script src="https://cdn.bootcss.com/extjs/6.2.0/ext-all.js"></script> 
+       <script src="https://cdn.bootcss.com/extjs/6.2.0/classic/theme-crisp/theme-crisp.js"></script>
+	   <script src="https://cdn.bootcss.com/extjs/6.2.0/classic/locale/locale-zh_CN.js"></script>
+	   <style></style>
+       <script type="text/javascript">
+		Ext.onReady(function(){
+		
+			//{name}和显示名称的字段保持一致
+			Ext.define('Ext.ux.MultiComboBox', {
+				extend: 'Ext.form.ComboBox',
+				alias: 'widget.multicombobox',
+				xtype: 'multicombobox',
+				initComponent: function(){
+					this.multiSelect = true;
+					this.listConfig = {
+						  itemTpl : Ext.create('Ext.XTemplate',
+								"<input type='checkbox' value='{[values.id]}'/>{name}"),
+						  onItemSelect: function(record) {    
+							  var node = this.getNode(record);
+							  if (node) {
+								 Ext.fly(node).addCls(this.selectedItemCls);
+								 
+								 var checkboxs = node.getElementsByTagName("input");
+								 if(checkboxs!=null)
+								 {
+									 var checkbox = checkboxs[0];
+									 checkbox.checked = true;
+								 }
+							  }
+						  },
+						  listeners:{
+							  itemclick:function(view, record, item, index, e, eOpts ){
+								  var isSelected = view.isSelected(item);
+								  var checkboxs = item.getElementsByTagName("input");
+								  if(checkboxs!=null)
+								  {
+									  var checkbox = checkboxs[0];
+									  if(!isSelected)
+									  {
+										  checkbox.checked = true;
+									  }else{
+										  checkbox.checked = false;
+									  }
+								  }
+							  }
+						  }    	  
+					}   	
+					this.callParent();
+				}
+			});
+			// The data store containing the list of states
+			var states = Ext.create('Ext.data.Store', {
+				fields: ['abbr', 'name'],
+				data : [
+					{"abbr":"AL", "name":"Alabama"},
+					{"abbr":"AK", "name":"Alaska"},
+					{"abbr":"AZ", "name":"Arizona"}
+				]
+			});
+
+			// Create the combo box, attached to the states data store
+			var comboBox = Ext.create('Ext.ux.MultiComboBox', {
+				fieldLabel: 'Choose State',
+				store: states,
+				queryMode: 'local',
+				displayField: 'name',
+				valueField: 'abbr',
+				renderTo: Ext.getBody()
+			});
+
+			Ext.create('Ext.form.Panel',{
+				title: '多选下拉扩展',
+				items:[comboBox],
+				bodyPadding: 15,
+				width: 300,
+
+				// Fields will be arranged vertically, stretched to full width
+				layout: 'anchor',
+				defaults: {
+					anchor: '100%'
+				},
+				renderTo: Ext.getBody()
+			});
+		});
+        </script>
+    </head>
+    <body></body>
+</html>
