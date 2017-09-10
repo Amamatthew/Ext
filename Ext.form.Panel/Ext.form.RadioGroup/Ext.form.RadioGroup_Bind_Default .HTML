@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	   <meta charset="UTF-8" />
+	   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+       <title>Welcome to Ext JS!</title>
+	   <meta name="viewport" content="width=device-width, initial-scale=1">
+       <link  href="https://cdn.bootcss.com/extjs/6.2.0/classic/theme-crisp/resources/theme-crisp-all.css" rel="stylesheet">
+       <script src="https://cdn.bootcss.com/extjs/6.2.0/ext-all.js"></script> 
+       <script src="https://cdn.bootcss.com/extjs/6.2.0/classic/theme-crisp/theme-crisp.js"></script>
+	   <script src="https://cdn.bootcss.com/extjs/6.2.0/classic/locale/locale-zh_CN.js"></script>
+	   <style></style>
+       <script type="text/javascript">
+		Ext.onReady(function(){
+			Ext.define('MyApp.main.view.Main', {
+				extend: 'Ext.app.ViewModel',
+				alias: 'viewmodel.main',
+				data: {
+					myValue: '3'
+				}
+			});
+
+			Ext.create('Ext.form.Panel', {
+				title: 'RadioGroup Example',
+				viewModel: {
+					type: 'main'
+				},
+				width: 300,
+				bodyPadding: 10,
+				renderTo: Ext.getBody(),
+				items:[{
+					xtype: 'radiogroup',
+					fieldLabel: 'Two Columns',
+					// Arrange radio buttons into two columns, distributed vertically
+					columns: 2,
+					vertical: true,
+					simpleValue: true,  // set simpleValue to true to enable value binding
+					bind: '{myValue}',  // 绑定默认选择value值
+					items: [
+						{ boxLabel: 'Item 1', name: 'rb', inputValue: '1' },
+						{ boxLabel: 'Item 2', name: 'rb', inputValue: '2' },
+						{ boxLabel: 'Item 3', name: 'rb', inputValue: '3' },
+						{ boxLabel: 'Item 4', name: 'rb', inputValue: '4' },
+						{ boxLabel: 'Item 5', name: 'rb', inputValue: '5' },
+						{ boxLabel: 'Item 6', name: 'rb', inputValue: '6' }
+					]
+				}]
+			});
+		});
+        </script>
+    </head>
+    <body></body>
+</html>
+  

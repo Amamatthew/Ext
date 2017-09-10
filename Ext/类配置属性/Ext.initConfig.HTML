@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	   <meta charset="UTF-8" />
+	   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+       <title>Welcome to Ext JS!</title>
+	   <meta name="viewport" content="width=device-width, initial-scale=1">
+       <link  href="https://cdn.bootcss.com/extjs/6.2.0/classic/theme-crisp/resources/theme-crisp-all.css" rel="stylesheet">
+       <script src="https://cdn.bootcss.com/extjs/6.2.0/ext-all.js"></script> 
+       <script src="https://cdn.bootcss.com/extjs/6.2.0/classic/theme-crisp/theme-crisp.js"></script>
+	   <script src="https://cdn.bootcss.com/extjs/6.2.0/classic/locale/locale-zh_CN.js"></script>
+	   <style></style>
+       <script type="text/javascript">
+		/*
+		ExtJS 4 has introduced new feature called config. 
+		You can declare public properties with default values in config. 
+		Config means configuration option for the class. 
+		Properties which are declared via config, will have getters and setters automatically if class does not have this methods already define. 
+		*/
+		Ext.application({
+			name : 'extjs-development',
+			launch : function(){
+				
+				Ext.define('Runner', 
+				{
+					config:{
+						name : 'Usian Bolt',
+						height: 180,
+						weight: 80
+					},
+					constructor: function(config){
+						this.initConfig(config);
+					}           
+				});
+				
+				var runner = Ext.create('Runner');
+				alert(runner.getName()+" height is "+runner.getHeight()+"cm and weight is "+runner.getWeight()+"kg");
+			}
+		});
+        </script>
+    </head>
+    <body></body>
+</html>
