@@ -1,1 +1,5 @@
-https://github.com/yyhsong/iExtJs5	入门范例-ExtJs5
+Ext5
+https://github.com/yyhsong/iExtJs5	入门范例
+
+Ext6
+http://www.extjs-tutorial.com	入门范例
