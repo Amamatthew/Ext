@@ -1,7 +1,38 @@
-内置插件:
+﻿第三方插件:
 
-第三方插件:
+导出：
 
-时间：
-导出：https://github.com/iwiznia/Ext.ux.Exporter
+https://github.com/iwiznia/Ext.ux.Exporter
+
+https://druckit.wordpress.com/2014/12/26/converting-an-ext-5-grid-to-excel-spreadsheet/
+
+日期时间：
+
+Plugins and Extensions for EXT JS 4
+
+Ext.ux.aceeditor.Panel				代码编辑器
+
+Ext.ux.grid.feature.Tileview		表格标题图像列表
+
+Ext.ux.upload.Button				上传按钮
+
+Ext.ux.toggleslide.ToggleSlide		切换按钮
+
+Ext.ux.container.ButtonSegment		按钮组
+
+Ext.ux.grid.plugin.RowEditing		行编辑
+
+Ext.ux.grid.plugin.DragSelector		表格拖拽
+
+Ext.ux.grid.plugin.SortMenu			筛选菜单
+
+Ext.ux.grid.plugin.MultipleSort		多重筛选
+
+Ext.ux.window.EachDialog			多按钮窗体
+
+Ext.ux.grid.property.Grid			扩展属性表
+
+Ext.ux.form.field.TinyMCE			TinyMCE编辑器
+
+Ext.ux.form.field.Grid				表格字段组件
 

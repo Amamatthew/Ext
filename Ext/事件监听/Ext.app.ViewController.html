@@ -3,7 +3,7 @@
     <head>
 	   <meta charset="UTF-8" />
 	   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-       <title>Welcome to Ext JS!</title>
+       <title>ExtJS视图控制器</title>
 	   <meta name="viewport" content="width=device-width, initial-scale=1">
        <link  href="https://cdn.bootcss.com/extjs/6.2.0/classic/theme-crisp/resources/theme-crisp-all.css" rel="stylesheet">
        <script src="https://cdn.bootcss.com/extjs/6.2.0/ext-all.js"></script> 
@@ -11,33 +11,28 @@
 	   <script src="https://cdn.bootcss.com/extjs/6.2.0/classic/locale/locale-zh_CN.js"></script>
 	   <style></style>
        <script type="text/javascript">
-		Ext.onReady(function(){
-		
-		    //定义单例
-			Ext.define('APP.config.Config', {
-				singleton : true,
-				config : {
-					base : "http://www.yahoo.com/extjs/6",
-					text : "nulo"
-				},
-				constructor: function(config) {
-					this.initConfig(config);
-					return this;
-				},
-				getUrl : function (moduler) {
-					return(this.getBase()+moduler);
-				}
-			});
-			//SET方法配置
-			APP.config.Config.setBase("http://www.yahoo.com/");
-			
-			//GET方法获取
-			alert(APP.config.Config.getBase());
-			
-			//直接访问方法
-			console.log(APP.config.Config.getUrl("user"));
-			console.log(APP.config.Config.getUrl("user/login"));
-		});
+			//类层的监听总是会在搜索组件的上层之前先搜索组件自身的视图控制器。
+			//而子组件的事件监听响应函数会上溯到上层父容器的视图控制器
+			Ext.define('MyApp.view.main.Main', {  
+				extend: 'Ext.container.Container',  
+				controller: 'main',  
+			  
+				items: [{
+					xtype: 'user',  
+					listeners: {  
+						remove: 'onUserRemove'  
+					}  
+				}]  
+			});  
+			  
+			Ext.define('MyApp.view.main.MainController', {  
+				extend: 'Ext.app.ViewController',  
+				alias: 'controller.main',  
+			  
+				onUserRemove: function() {  
+					console.log('user removed');  
+				}  
+			});  
         </script>
     </head>
     <body></body>

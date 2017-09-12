@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	   <meta charset="UTF-8" />
+	   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+       <title>ExtJS解析作用域为组件</title>
+	   <meta name="viewport" content="width=device-width, initial-scale=1">
+       <link  href="https://cdn.bootcss.com/extjs/6.2.0/classic/theme-crisp/resources/theme-crisp-all.css" rel="stylesheet">
+       <script src="https://cdn.bootcss.com/extjs/6.2.0/ext-all.js"></script> 
+       <script src="https://cdn.bootcss.com/extjs/6.2.0/classic/theme-crisp/theme-crisp.js"></script>
+	   <script src="https://cdn.bootcss.com/extjs/6.2.0/classic/locale/locale-zh_CN.js"></script>
+	   <style></style>
+       <script type="text/javascript">
+	   //==========
+	   //作用域解析
+	   //==========
+	   //在Ext JS 5，对listeners配置项做了改进，允许将事件处理指定为字符串来对应方法名。在运行时（触发事件的任何时候），框架会将这些方面解析为实际的函数引用。我们将这一过程称为事件监听作用域解析。
+	   //作用域解析有两种结果：组件或视图控制器（ViewController）。无论是哪种结果，都会从组件开始搜索。作用域可能是组件，也可能是视图控制器，如果不是，框架会“爬”到组件的上层直到找到适合的组件或视图控制器。
+	   
+	   //http://blog.csdn.net/tianxiaode/article/details/39206763
+	   
+	   //框架解析作用域的第一种方式是寻找defaultListenerScope配置项为true的组件。
+	   //对于类中的事件监听声明，搜索会从组件自身开始。
+	   
+	   //监听被定义在了用户视图的类主体，这意味着框架在提升层次之前会先检查用户视图自身的defaultListenerScope。
+	   //在当前示例，用户视图将defaultListenerScope设置为了true，那当前监听的作用域将会被解析为用户视图。
+	   
+		Ext.define('MyApp.view.user.User', {  
+			extend: 'Ext.panel.Panel',  
+			xtype: 'user',  
+			defaultListenerScope: true,  
+		  
+			listeners: {  
+				save: 'onUserSave'  
+			},  
+		  
+			onUserSave: function() {  
+				console.log('user saved');  
+			}  
+		});  
+		
+		//对于事件监听被声明在实例配置项的情况，将会跳过组件自身，框架会从父容器开始搜索，请参考以下代码：
+		
+		Ext.define('MyApp.view.main.Main', {  
+			extend: 'Ext.container.Container',  
+			defaultListenerScope: true,  
+		  
+			items: [{  
+				xtype: 'user',  
+				listeners: {  
+					remove: 'onUserRemove'  
+				}  
+			}],  
+		  
+			onUserRemove: function() {  
+				console.log('user removed');  
+			}  
+		});  
+       </script>
+    </head>
+    <body></body>
+</html>

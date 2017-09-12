@@ -12,24 +12,30 @@
 	   <style></style>
        <script type="text/javascript">
 		Ext.onReady(function(){
-		var window = 
-		// myToolbar下itemId为 'savebutton'的组件
-			xtype : 'toolbar',
-			itemId: 'ordertoolbar',
-			items : [{
-				text : 'Save Order',
-				itemId: 'savebutton'
-			}]
+		var window = Ext.create('Ext.window.Window',{
+			items: [
+			{
+				xtype : 'toolbar',
+				itemId: 'ordertoolbar',
+				items : [{
+					text : 'Save Order',
+					itemId: 'savebutton'
+				}]
+			}],
+			renderTo: Ext.getBody()
+		});
+		//myToolbar下itemId为 'savebutton'的组件
+
 			
 		//不好的组件引用方法
-		var mySaveButton = myToolbar.items.getAt(2);
+		//var mySaveButton = myToolbar.items.getAt(2);
  
-		var myWindow = myToolbar.ownerCt;
+		//var myWindow = myToolbar.ownerCt;
 		
 		//正确组件引用
-		var mySaveButton = myToolbar.down('savebutton');    // searching against itemId
+		//var mySaveButton = myToolbar.down('savebutton');    // searching against itemId
  
-		var myWindow = myToolbar.up('window');		
+		//var myWindow = myToolbar.up('window');		
 		
 		});
         </script>
