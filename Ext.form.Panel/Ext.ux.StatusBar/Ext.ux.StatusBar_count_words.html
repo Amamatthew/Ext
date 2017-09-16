@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Welcome to Ext JS 6.0.0!</title>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/extjs/6.0.0/classic/theme-crisp/resources/theme-crisp-all.css">
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/extjs/6.0.0/ext-all-debug.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/extjs/6.0.0/classic/theme-crisp/theme-crisp-debug.js"></script>
+
+	    <script src="https://cdn.bootcss.com/extjs/6.0.0/classic/locale/locale-zh_CN.js"></script>
+
+        <script type="text/javascript">
+		Ext.onReady(function(){
+			//=======================2. 文字处理实例================================
+			//注意:status的状态不可变
+			bd.createChild({tag:'h2',html:'2. 文字处理实例'});
+			
+			//输入单词,看状态栏变化
+			var wordCount=new Ext.Toolbar.TextItem('Words : 0');
+			var charCount=new Ext.Toolbar.TextItem('Chars : 0');
+			var clock=new Ext.Toolbar.TextItem('');
+			
+			var statusbar2=new Ext.Panel({
+				title:'文字处理--状态栏',
+				width:600,
+				height:150,
+				layout:'fit',
+				bodyStyle:'padding:10px;',
+				bbar:new Ext.ux.StatusBar({
+					defaultText:'文字处理实例',
+					id:'word-status',//这个名字是不可变的
+					items:[
+						wordCount,' ','-',' ',
+						charCount,' ','-',' ',
+						clock,' ','-',' '
+					]
+				}),
+				items:[
+					{
+						xtype:'textarea',
+						id:'word-textarea',
+						grow:true,
+						enableKeyEvents:true,
+						layout:'fit',
+						listeners:{
+							'keypress':{
+								fn:function(t){
+									var v=t.getValue();
+									var wc=0;
+									var cc=v.length?v.length:0;
+									if(cc > 0){
+										wc=v.match(/\b/g);//这里是一组分隔符,',,,,,,,,,'代表输入到第五个单词了
+										//alert(wc);
+										wc=wc ? wc.length/2:0;
+									}
+									Ext.fly(wordCount.getEl()).update('word:'+wc);
+									Ext.fly(charCount.getEl()).update('char:'+cc);
+								},
+								buffer:1//一秒刷新一次
+							}
+							
+						}
+					}	   
+				],
+				
+				listeners:{
+					render:{
+						fn:function(){
+							Ext.fly(wordCount.getEl().parent()).addClass('x-status-text-panel').createChild({cls:'spacer'});
+							Ext.fly(charCount.getEl().parent()).addClass('x-status-text-panel').createChild({cls:'spacer'});
+							Ext.fly(clock.getEl().parent()).addClass('x-status-text-panel').createChild({cls:'spacer'});
+							Ext.TaskMgr.start({
+								run: function(){
+									Ext.fly(clock.getEl()).update(new Date().format('g:i:s A'));
+								},
+								interval: 1000
+							});
+						},
+						delay:1000
+					}
+				}
+			
+			});
+			
+			Ext.getCmp('word-textarea').on('keypress', function(){
+				var sb = Ext.getCmp('word-status');
+				sb.showBusy('Saving draft...');
+				(function(){
+					sb.setStatus({
+						iconCls: 'x-status-saved',
+						text: 'Draft auto-saved at ' + new Date().format('g:i:s A')
+					});
+				}).defer(4000);//执行括号里面的函数前等待4秒
+			}, this, {buffer:1500});//按键事件缓冲1.5秒以后执行按键函数
+			statusbar2.render(document.body);
+		});
+	</script>
+    </head>
+    
+    <body></body>
+
+</html>

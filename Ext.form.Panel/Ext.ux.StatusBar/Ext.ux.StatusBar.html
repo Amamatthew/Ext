@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Welcome to Ext JS 6.0.0!</title>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/extjs/6.0.0/classic/theme-crisp/resources/theme-crisp-all.css">
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/extjs/6.0.0/ext-all-debug.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/extjs/6.0.0/classic/theme-crisp/theme-crisp-debug.js"></script>
+
+	    <script src="https://cdn.bootcss.com/extjs/6.0.0/classic/locale/locale-zh_CN.js"></script>
+
+        <script type="text/javascript">
+		Ext.onReady(function(){
+			Ext.QuickTips.init();
+			var bd=Ext.getBody();
+			//===================1. 标准的statusbar=======================
+			bd.createChild({tag:'h2',html:'1. 标准的statusbar'});
+			
+			var comboData=[
+				['text1','value1'],
+				['text2','value2'],
+				['text3','value3']
+			];
+			
+			var comboStore=new Ext.data.SimpleStore({
+				data:comboData,
+				fields:['text','value']
+			});
+			
+			var combo=new Ext.form.ComboBox({
+				store:comboStore,
+				displayField:'value',
+				valueField:'text',
+				mode:'local',
+				triggerAction:'all',
+				emptyText:'请选择',
+				width:60,
+				listeners:{
+					'select':function(combo){
+						var c=combo.getValue();
+						var sb=Ext.getCmp('statusbar-id');
+						sb.setStatus({
+							text:c,
+							iconCls:'',
+							clear:true
+						});
+					}
+					
+				}
+			});
+			
+			
+			var statusbar=new Ext.Panel({
+				title:'标准的statusBar',
+				
+				width:1000,
+				height:200,
+				bbar:Ext.create('Ext.ux.StatusBar',{
+					defaultText:'默认文本',
+					id:'statusbar-id',
+					items:[
+						{
+							text:'修改status,看变化',
+							handler:function(){
+								var sb=Ext.getCmp('statusbar-id');	
+								sb.setStatus({
+									text:'修改状态啦!!5秒后恢复原状态',
+									iconCls:'x-status-error',
+									//clear:true
+									clear:{
+										wait:5000,//等待5秒后改变状态
+										anim:true,//是否有淡出动画
+										useDefaults:true,//自定义的状态在	5秒后是否恢复为原来的默认状态,默认为true
+									}
+								});
+							}
+						}, ' ','-',' ',
+						{
+							text:'修改status,看变化',
+							handler:function(){
+								var sb=Ext.getCmp('statusbar-id');	
+								sb.setStatus({
+									text:'修改状态啦!!不回复原状态,变空',
+									iconCls:'x-status-error',
+									//clear:true
+									clear:{
+										wait:5000,//等待5秒后改变状态
+										anim:true,//是否有淡出动画
+										useDefaults:false,//自定义的状态在5秒后是否恢复为原来的默认状态
+									}
+								});
+							}
+						}, ' ','-',' ',
+						{
+							text:'修改status,看变化',
+							handler:function(){
+								var sb=Ext.getCmp('statusbar-id');	
+								sb.setStatus({
+									text:'修改状态啦!!装填不会自动改变!!',
+									iconCls:'x-status-error',
+									clear:false//改变后的状态不会自动消失
+								});
+							}
+						}, ' ','-',' ',
+						{
+							text:'删除状态栏',
+							handler:function(){
+								var sb=Ext.getCmp('statusbar-id');	
+								sb.clearStatus();
+							}
+						}, ' ','-',' ',
+						{
+							text:'busy状态',
+							handler:function(){
+								var sb=Ext.getCmp('statusbar-id');
+								sb.showBusy();
+							}
+						}, ' ','-',' ',/*
+						new Date().format('Y年m月d日'),*/ ' ','-',' ',
+						combo
+					]				  
+				})						
+			});
+			statusbar.render(document.body);
+		});
+	</script>
+    </head>
+    
+    <body></body>
+
+</html>

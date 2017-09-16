@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+       <title>Welcome to Ext JS!</title>
+       <link rel="stylesheet" type="text/css" href="http://cdn.sencha.com/ext/gpl/5.0.0/build/packages/ext-theme-neptune/build/resources/ext-theme-neptune-all.css">
+       <script type="text/javascript" src="http://cdn.sencha.com/ext/gpl/5.0.0/build/ext-all.js"></script> 
+       <script type="text/javascript" src="http://cdn.sencha.com/ext/gpl/5.0.0/build/packages/ext-theme-neptune/build/ext-theme-neptune.js"></script>
+	   <script type="text/javascript" src="http://cdn.sencha.com/ext/gpl/5.0.0/packages/ext-locale/overrides/zh_CN/ext-locale-zh_CN.js"></script>
+	<style>
+		/*下面可以自己修改*/
+	</style>
+        <script type="text/javascript">
+		Ext.onReady(function(){
+			Ext.create('Ext.grid.property.Grid', {
+				title: 'Properties Grid',
+				width: 300,
+				renderTo: Ext.getBody(),
+				source: {
+					"(name)": "My Object",
+					"Created": Ext.Date.parse('10/15/2006', 'm/d/Y'),
+					"Available": false,
+					"Version": 0.01,
+					"Description": "A test object"
+				},
+				bbar:[{
+					xtype: 'button', // default for Toolbars
+					text: '网格ID查询',
+					handler:function() {
+						var formID = this.up('propertygrid').getId();
+						alert(formID);
+					}
+				}]
+			});
+		});
+        </script>
+    </head>
+    <body></body>
+</html>
+
+
