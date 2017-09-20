@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	   <meta charset="UTF-8" />
+	   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+       <title>Ext.view.View显示职员的表格信息</title>
+	   <meta name="viewport" content="width=device-width, initial-scale=1">
+       <link  href="https://cdn.bootcss.com/extjs/6.2.0/classic/theme-crisp/resources/theme-crisp-all.css" rel="stylesheet">
+       <script src="https://cdn.bootcss.com/extjs/6.2.0/ext-all.js"></script> 
+       <script src="https://cdn.bootcss.com/extjs/6.2.0/classic/theme-crisp/theme-crisp.js"></script>
+	   <script src="https://cdn.bootcss.com/extjs/6.2.0/classic/locale/locale-zh_CN.js"></script>
+	   
+	   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+	   <style></style>
+       <script type="text/javascript">
+		Ext.onReady(function(){
+		
+		//数据模型
+		Ext.define('Person', {
+			extend: 'Ext.data.Model',
+			fields: [
+			{	name: 'name',	type: 'string'  },
+			{	name: 'age',	type: 'int'	    },
+			{	name: 'gender',    type: 'int'  }
+			]
+		});
+		//数据仓库
+		Ext.create('Ext.data.Store', {
+			id: 'employees',
+			model: 'Person',
+			data: [
+			{
+				name: 'Mike',
+				age: 22,
+				gender: 0
+			},
+			{
+				name: 'Woo',
+				age: 32,
+				gender: 1
+			},
+			{
+				name: 'John',
+				age: 33,
+				gender: 1
+			},
+			{
+				name: 'Kalai',
+				age: 25,
+				gender: 0
+			}
+			]
+
+		});
+		//XTemplate定义
+		var empTpl = new Ext.XTemplate(
+		'<tpl for=".">',
+			'<div style="margin-bottom: 10px;" class="data-view">', 
+				'<table style="width:100%">',
+					'<tr>',
+						'<td style="font-size: 100px;width:100px;" rowspan="3"><i class="fa fa-user"></i></td>', //表格第一行的第一个单元格，直跨三行
+						'<td>Name: {name}</td>', 
+					'</tr>',
+					'<tr>', 
+						'<td>Age:{age}</td>',
+					'</tr>',
+					'<tr>',
+						'<td>Gender:',
+							'<tpl if="gender == 1">', 
+								'<i class="fa fa-mars"></i>',
+							'<tpl else>',
+								'<i class="fa fa-venus"></i>', 
+							'</tpl>',
+						'</td>',
+					'</tr>',
+				'</table>',
+			'</div>',
+		'</tpl>'
+		);
+			
+		//视图组件	
+		Ext.create('Ext.view.View', {
+			store: Ext.getStore('employees'),
+			tpl: empTpl,
+			itemSelector: 'div.data-view',
+			renderTo: Ext.getBody(),
+			listeners: {
+				itemclick: function(node, rec, item, index, e) {
+					alert(rec.data.name);
+				}
+			}
+		});
+		});
+        </script>
+    </head>
+    <body></body>
+</html>
