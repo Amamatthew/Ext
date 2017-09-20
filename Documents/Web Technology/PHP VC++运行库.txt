@@ -1,0 +1,18 @@
+php5.3、5.4和apache都是用vc9编译，电脑必须安装vc9运行库才能运行。
+php5.5、5.6是vc11编译，如用php5.5、5.6必须安装vc11运行库。
+php7.0、7.1是vc14编译，如用php7.0、7.1必须安装vc14运行库。
+
+vc9和vc11运行库下载：https://pan.baidu.com/s/1dF9LslV 密码：v7ap
+
+php5.5以上才有64位的，其他均为32位。所以64位的系统最好把32位的运行库也安装上。
+
+如果您下载的是32位的phpStudy，需要安装32位的运行库；32位的VC9运行库必须安装。
+
+注意3点：1必须安装32位的运行库，2管理员身份运行，3兼容模式运行。
+----------------------------------------------------------------------
+运行php需要32位vc11或者vc14运行库怎么解决
+
+microsoft visual c++ 2012 redistribute (x86)
+microsoft visual c++ 2015 redistribute (x86)
+网上下载安装上就行
+微软官网 vc14 https://www.microsoft.com/en-us/download/details.aspx?id=48145

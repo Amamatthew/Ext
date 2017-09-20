@@ -1,6 +1,0 @@
-运行php需要32位vc11或者vc14运行库怎么解决
-
-microsoft visual c++ 2012 redistribute (x86)
-microsoft visual c++ 2015 redistribute (x86)
-网上下载安装上就行
-微软官网 vc14 https://www.microsoft.com/en-us/download/details.aspx?id=48145
