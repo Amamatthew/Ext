@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	   <meta charset="UTF-8" />
+	   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+       <title>Welcome to Ext JS!</title>
+	   <meta name="viewport" content="width=device-width, initial-scale=1">
+       <link  href="https://cdn.bootcss.com/extjs/6.2.0/classic/theme-crisp/resources/theme-crisp-all.css" rel="stylesheet">
+       <script src="https://cdn.bootcss.com/extjs/6.2.0/ext-all.js"></script> 
+       <script src="https://cdn.bootcss.com/extjs/6.2.0/classic/theme-crisp/theme-crisp.js"></script>
+	   <script src="https://cdn.bootcss.com/extjs/6.2.0/classic/locale/locale-zh_CN.js"></script>
+	   <style></style>
+       <script type="text/javascript">
+		Ext.onReady(function(){
+		
+			var store = Ext.create('Ext.data.TreeStore', {
+				root: {
+					expanded: true,
+					text: 'Continents',
+					children: [{
+						name: 'Antarctica',
+						population: 0,
+						area: 14,
+						leaf: true
+					},
+					{
+						name: 'South America',
+						population: 385,
+						area: 17.84,
+						expanded: false,
+						children: [{
+							name: 'Chile',
+							population: 18,
+							area: 0.7,
+							leaf: true,
+						}]
+
+					},
+					{
+						name: 'Asia',
+						expanded: true,
+						population: 4164,
+						area: 44.57,
+						children: [{
+							name: 'India',
+							leaf: true,
+							population: 1210,
+							area: 3.2
+						},
+						{
+							name: 'China',
+							leaf: true,
+							population: 1357,
+							area: 9.5
+						}
+						]
+					},
+					{
+						name: 'Africa',
+						leaf: true,
+						population: 1110,
+						area: 30
+					}
+					]
+				}
+			});
+
+			Ext.create('Ext.tree.Panel', { 
+				title: 'Tree Grid',
+				width: 500,
+				height: 450,
+				store: store,
+				rootVisible: false,
+				useArrows: true,
+				lines: false,
+				scope: this,
+				renderTo: Ext.getBody(),
+				columns: [{
+					xtype: 'treecolumn',
+					text: 'Name',
+					flex: 1,
+					sortable: true,
+					dataIndex: 'name' 
+				},{
+					text: 'Population (millons)',
+					sortable: true,
+					width: 150,
+					dataIndex: 'population' 
+				},{
+					text: 'Area (millons km^2)',
+					width: 150,
+					sortable: true,
+					dataIndex: 'area' 
+				}],
+
+			});
+		});
+        </script>
+    </head>
+    <body></body>
+</html>
