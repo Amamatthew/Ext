@@ -6,3 +6,6 @@ http://www.extjs-tutorial.com	»Î√≈∑∂¿˝
 
 Extjs by example: customer feedback form
 https://github.com/ananddayalan/extjs-by-example-customer-feedback-form
+
+The picture explorer ®C a sample project
+https://github.com/ananddayalan/extjs-by-example-picture-explorer
