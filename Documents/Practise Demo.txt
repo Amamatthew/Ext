@@ -9,3 +9,9 @@ https://github.com/ananddayalan/extjs-by-example-customer-feedback-form
 
 The picture explorer ¨C a sample project
 https://github.com/ananddayalan/extjs-by-example-picture-explorer
+
+MiamiCoder/extjs6-one-to-one-associations
+https://github.com/MiamiCoder/extjs6-one-to-one-associations-with-php-backend
+
+MySQL Sample Database Schema
+http://www.mysqltutorial.org/mysql-sample-database.aspx
