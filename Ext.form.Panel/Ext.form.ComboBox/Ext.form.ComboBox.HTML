@@ -13,7 +13,36 @@
        <script type="text/javascript">
 		Ext.onReady(function(){
 				
+		Ext.tip.QuickTipManager.init();
 
+		Ext.create('Ext.form.ComboBox', {
+			fieldLabel: 'Choose State',
+			store: {
+				fields: ['abbr', 'name', 'tip'],
+				data: [{
+					"abbr": "AL",
+					"name": "Alabama ",
+					tip: 'Quicktip 1'
+				},
+				{
+					"abbr": "AK",
+					"name": "Alaska",
+					tip: 'Quicktip 2'
+				},
+				{
+					"abbr": "AZ",
+					"name": "Arizona",
+					tip: 'Quicktip 3'
+				}]
+			},
+
+			valueField: 'abbr',
+			displayField: 'name',
+			renderTo: Ext.getBody(),
+			listConfig: {
+				tpl: ['<table width="100%"><tpl for=".">', '<tr data-qtip="{tip}">', '<td role="option" class="x-boundlist-item">{name}</td>', '</tr>', '</tpl></table>']
+			}
+		});
 		});
         </script>
     </head>

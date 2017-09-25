@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	   <meta charset="UTF-8" />
+	   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+       <title>Welcome to Ext JS 6.0.0!</title>
+	   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+       <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/extjs/6.0.0/classic/theme-crisp/resources/theme-crisp-all.css">
+       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/extjs/6.0.0/ext-all-debug.js"></script>
+       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/extjs/6.0.0/classic/theme-crisp/theme-crisp-debug.js"></script>
+	   <script src="https://cdn.bootcss.com/extjs/6.0.0/classic/locale/locale-zh_CN.js"></script>
+	   
+       <script type="text/javascript">
+		Ext.onReady(function(){
+			/**
+			 * Created by liuxin on 2015-04-24.
+			 */
+			Ext.define('Ext.ux.CombGrid', {
+				extend : 'Ext.form.field.ComboBox',
+				alias : 'widget.combgrid',
+
+				multiSelect : true,
+				gridWidth : 500,
+				gridHeight: 140,
+				isCheckBox : true,
+
+				createPicker : function() {
+					var me = this;
+					me.store.load();
+					var picker = Ext.create('Ext.grid.Panel', {
+						
+								store : me.store,
+								frame : false,
+								resizable : true,
+								columns : me.columns,
+								selModel : me.isCheckBox ? Ext.create("Ext.selection.CheckboxModel", {
+									mode : me.multiSelect ? 'SIMPLE' : 'SINGLE'
+								}): {  
+									mode: me.multiSelect ? 'SIMPLE' : 'SINGLE'  
+								},
+								floating : true,
+								hidden : true,
+								width : me.gridWidth,
+								height:me.gridHeight,
+								columnLines : true,
+								focusOnToFront : false,
+								listeners: {
+									itemclick: {
+										itemclick : me.onItemClick
+									},
+									refresh: {
+										fn: me.onListRefresh
+									}
+								}
+							});
+							
+	
+					
+					if(!Ext.isEmpty(me.title)){
+						picker.setTitle(me.title);
+					}
+					if(me.paging){
+						picker.addDocked(Ext.create('Ext.PagingToolbar', {
+									store: me.store,
+									dock : "bottom",
+									displayInfo: true,
+									pageSize : 25,
+									displayMsg: '显示{0} - {1}条，  共{2}条',
+									emptyMsg: "没有数据",
+									listeners : {
+										afterrender : function(h, g) {
+											h.insert(6, ["-", "每页", {
+														xtype : "numberfield",
+														width : 50,
+														allowBlank : false,
+														editable : true,
+														value : h.getStore().pageSize,
+														listeners : {
+															blur : function(j, k, i) {
+																h.getStore().pageSize = j.getValue();
+																h.getStore()
+																		.loadPage(1)
+															}
+														}
+													}, "条"])
+										}
+									}
+								}));
+					}
+
+					picker.getSelectionModel().on({
+								beforeselect : me.onBeforeSelect,
+								beforedeselect : me.onBeforeDeselect,
+								selectionchange : me.onListSelectionChange,
+								scope : me
+							});		
+
+					this.picker = picker;
+					return picker;
+				},
+
+				onItemClick : function(picker, record) {
+					var me = this, selection = me.picker.getSelectionModel().getSelection(), valueField = me.valueField;
+					if (!me.multiSelect && selection.length) {
+						if (record.get(valueField) === selection[0].get(valueField)) {
+							me.displayTplData = [record.data];
+							me.setRawValue(me.getDisplayValue());
+							me.collapse();
+						}
+					}
+				},
+
+				matchFieldWidth : false,
+
+				onListSelectionChange : function(list, selectedRecords) {
+					var me = this, isMulti = me.multiSelect, hasRecords = selectedRecords.length > 0;
+					if (!me.ignoreSelection && me.isExpanded) {
+						if (!isMulti) {
+							Ext.defer(me.collapse, 1, me);
+						}
+						if (isMulti || hasRecords) {
+							me.setValue(selectedRecords, false);
+							console.log(me.getValue()); //多选时候显示值数组
+						}
+						if (hasRecords) {
+							me.fireEvent('select', me, selectedRecords);
+						}
+			//			if(!Ext.isEmpty(me.getItem)){
+			//				for(var m=0;m<me.getItem.length;m++){
+			//					var fi = me.next('[itemId=' + me.getItem[m] + ']');
+			//					var vi = [];
+			//					for(var i=0;i<selectedRecords.length;i++){
+			//						vi.push(selectedRecords[i].get(fi.nextName) + '');
+			//					}
+			//					fi.setValue(vi.join(','));
+			//				}
+			//			}
+			//			if(!Ext.isEmpty(me.parentVar)){
+			//				window[me.parentVar] = selectedRecords;
+			//			}
+			//			me.inputEl.focus();
+					}
+				},
+
+				doAutoSelect : function() {
+					var me = this, picker = me.picker, lastSelected, itemNode;
+					if (picker && me.autoSelect && me.store.getCount() > 0) {
+						lastSelected = picker.getSelectionModel().lastSelected;
+						itemNode = picker.view.getNode(lastSelected || 0);
+						var records = [];
+						if(!Ext.isEmpty(me.getValue())){
+							for(var j=0;j<me.getValue().length;j++){
+								var record = me.store.findRecord('ROLE_ID',me.getValue()[j]);
+								records.push(record);
+							}
+						}
+						picker.getSelectionModel().select(records);
+						if (itemNode) {
+							picker.view.highlightItem(itemNode);
+							picker.view.el.scrollChildIntoView(itemNode, false);
+						}
+					}
+				},
+				onChange: function(a,b,c,d){
+					var me = this;
+					me.setValue(a);
+				},
+				constructor: function(cfg) {
+					var me = this;
+					Ext.apply(me, cfg);
+					me.callParent(arguments);
+				}	
+			});
+			 // Set up a model to use in our Store
+			 Ext.define('User', {
+				 extend: 'Ext.data.Model',
+				 fields: [
+					 {name: 'id', type: 'string'},
+					 {name: 'firstName', type: 'string'},
+					 {name: 'lastName',  type: 'string'},
+					 {name: 'age',       type: 'int'},
+					 {name: 'remark',  	 type: 'string'}
+				 ]
+			 });
+			 
+			  var store = Ext.create('Ext.data.Store', {
+				 model: 'User',
+				 proxy: {
+					 type: 'ajax',
+					 url: 'data/user.json',
+					 reader: {
+						 type: 'json',
+						 rootProperty: 'users'
+					 }
+				 },
+				 autoLoad: true
+			 });
+
+			var columns = [
+					{ text: 'ID', dataIndex: 'id', width:50 },
+					{ text: 'firstName', dataIndex: 'firstName', flex: 1 },
+					{ text: 'lastName', dataIndex: 'lastName', flex: 1 },
+					{ text: 'age', dataIndex: 'age', width:100 },
+					{ text: 'remark', dataIndex: 'remark', flex: 1 }
+				];
+				
+			Ext.create('Ext.ux.CombGrid',{
+				displayField: 'firstName',
+				valueField: 'id',
+				store: store,
+				columns: columns,
+				multiSelect : true,
+				renderTo: Ext.getBody()
+			});
+		});
+       </script>
+    </head>
+    <body></body>
+</html>
