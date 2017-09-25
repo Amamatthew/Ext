@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	   <meta charset="UTF-8" />
+	   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+       <title>Welcome to Ext JS 6.0.0!</title>
+       <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/extjs/6.0.0/classic/theme-crisp/resources/theme-crisp-all.css">
+       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/extjs/6.0.0/ext-all-debug.js"></script>
+       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/extjs/6.0.0/classic/theme-crisp/theme-crisp-debug.js"></script>
+	   <script src="https://cdn.bootcss.com/extjs/6.0.0/classic/locale/locale-zh_CN.js"></script>
+	   
+       <script type="text/javascript">
+		Ext.onReady(function(){
+
+			Ext.Ajax.on('beforerequest', function (conn, options) {
+			   if (!(/^http:.*/.test(options.url) || /^https:.*/.test(options.url))) {
+				 if (typeof(options.headers) == "undefined") {
+				   options.headers = {'X-CSRFToken': Ext.util.Cookies.get('csrftoken')};
+				 } else {
+				   options.headers.extend({'X-CSRFToken': Ext.util.Cookies.get('csrftoken')});
+				 }
+			   }
+			}, this);
+			
+			Ext.Ajax.request({
+				url: 'tianwanggaidihu',
+				method: 'POST',
+				success: function (response, opts) {
+					var responseJson = Ext.JSON.decode(response.responseText);
+					// 当后台数据同步成功时
+					if (responseJson.IsError) {
+						Ext.MessageBox.show({
+							title: "提示",
+							msg: "数据删除失败!"
+						});
+					} else {
+						store.remove(data[0]);// 页面效果
+						Ext.MessageBox.show({
+							title: "提示",
+							msg: "数据删除成功!"
+						});
+					}
+				},
+				failure: function (response, options) {
+					Ext.MessageBox.alert('提示', '数据删除错误!');
+				}
+
+			});
+		});
+       </script>
+    </head>
+    <body></body>
+</html>

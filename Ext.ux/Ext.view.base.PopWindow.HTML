@@ -40,13 +40,14 @@
 					waitMsg: '提交之中...'
 				},
 				constructor: function(config) {
-					this.initConfig(config);
-					var fieldsets = this.fields;
 					var me = this;
+					
+					Ext.apply(me, config);
+					var fieldsets = me.fields;					
 					Ext.each(fieldsets, function(field, fieldindex) {
 					   me.items.push(field);
 					 });
-					this.callParent();
+					me.callParent(arguments);
 				}	
 			});
 			/**
@@ -70,18 +71,18 @@
 				  },
 				  
 				  constructor: function(config) {
-					  
-					this.initConfig(config);
+					var me = this;  
+					Ext.apply(me, config);
 					
 					var form = Ext.create('widget.popform',{
-						fields: this.fields
+						fields: me.fields
 						});
 					this.items = [form];
 					this.callParent();
 				  } 
 			}); 
 		Ext.onReady(function(){
-			Ext.create('Ext.view.base.PopWindow',{
+		var me = Ext.create('Ext.view.base.PopWindow',{
 				title:'POP Window',
 				width:340,
 				height:120,
@@ -98,6 +99,7 @@
 				}],
 				renderTo: Ext.getBody()
 			}).show();
+		console.log(me);	
 		});
         </script>
     </head>
