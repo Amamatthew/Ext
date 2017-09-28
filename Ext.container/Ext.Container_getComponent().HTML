@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	   <meta charset="UTF-8" />
+	   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+       <title>Welcome to Ext JS!</title>
+	   <meta name="viewport" content="width=device-width, initial-scale=1">
+       <link  href="https://cdn.bootcss.com/extjs/6.2.0/classic/theme-crisp/resources/theme-crisp-all.css" rel="stylesheet">
+       <script src="https://cdn.bootcss.com/extjs/6.2.0/ext-all.js"></script> 
+       <script src="https://cdn.bootcss.com/extjs/6.2.0/classic/theme-crisp/theme-crisp.js"></script>
+	   <script src="https://cdn.bootcss.com/extjs/6.2.0/classic/locale/locale-zh_CN.js"></script>
+	   <style></style>
+       <script type="text/javascript">
+
+		/**
+		 *	container代表某个容器组件的引用变量名；comp参数可以为一个整数，代表所需要获取子组件在所有子组件中的序号，也可以为代表子组件的id的字符串。
+		 *  当使用子组件id的时候，请注意容器组件的getComponent方法只获取该容器的直接子组件，而不获取子组件的下层子组件。
+		 *  该方法返回获取到的子组件的引用，获取失败时返回undefined。
+		 */
+		Ext.require('Ext.Carousel');
+		Ext.application({
+			name: 'MyApp',
+			icon: 'images/icon.png',
+			glossOnIcon: false,
+			phoneStartupScreen: 'images/phone_startup.png',
+			tabletStartupScreen: 'images/tablet_startup.png',
+			launch: function() {
+				var panel = Ext.create('Ext.Panel', {
+					defaults:{
+						ui: 'dark',
+						flex:1,
+						xtype:'carousel',
+						defaults:{
+							xtype:'panel'
+						}
+					},
+					layout: {
+						type : 'vbox',
+						align: 'stretch'
+					},
+					items: [
+					{
+						id:'carousel1',					//组件ID
+						direction: 'horizontal',
+						items: [
+						{
+							html: '左面板',
+							style: 'background-color:pink'
+						},
+						{
+							html: '中面板',
+							style: 'background-color:red'
+						},
+						{
+							html: '右面板',
+							style: 'background-color:yellow'
+						}]
+					},
+					{
+						id:'carousel2',					//组件ID
+						direction: 'vertical',
+						items: [{
+							html: '上面板',
+							style: 'background-color:pink'
+						},
+						{
+							html: '中面板',
+							style: 'background-color:red'
+						},
+						{
+							html: '下面板',
+							style: 'background-color:yellow'
+						}]
+					}]
+				});
+				Ext.Viewport.add(panel); 
+				panel.getComponent('carousel1').setActiveItem(1);
+			}
+		});
+
+        </script>
+    </head>
+    <body></body>
+</html>
