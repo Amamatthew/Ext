@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="NPP-Plugin">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+ </head>
+ <body>
+  <script type="text/javascript">
+  
+    /*
+	  stringObject.search(regexp)通过正则表达式搜索匹配字符串
+		
+	  返回值
+	  stringObject 中第一个与 regexp 相匹配的子串的起始位置。
+		
+	  注释：如果没有找到任何匹配的子串，则返回 -1。
+	 */
+	var str="Visit W3School!"
+	document.write(str.search(/w3school/i));
+	
+	/*JavaScript replace() 方法
+	
+	  stringObject.replace(regexp/substr,replacement)
+	  
+	  返回值
+	  是用 replacement 替换了 regexp 的第一次匹配或所有匹配之后得到的一个新的字符串。
+	  
+	 */
+	 
+	var str="Visit Microsoft!"
+		document.write(str.replace(/Microsoft/, "W3School"));
+		
+	var str="Welcome to Microsoft! ";
+		str=str + "We are proud to announce that Microsoft has ";
+		str=str + "one of the largest Web Developers sites in the world.";
+
+		document.write(str.replace(/Microsoft/g, "W3School"));	//全局替换
+	
+	//原型批量替换	
+	String.prototype.replaceAll = function(s1,s2){ 
+		return this.replace(new RegExp(s1,"gm"),s2); 
+	}	
+	str.replaceAll("word","Excel");
+  </script>
+ </body>
+</html>
