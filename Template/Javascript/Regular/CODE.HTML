@@ -1,0 +1,173 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="NPP-Plugin">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+ </head>
+ <body>
+  <script type="text/javascript">
+	/**
+	 * CODE
+	 * @author mzhou / @zhoumm
+	 * @log 0.1 finish HTMLtoCODE
+	 *      0.2 finish CODEtoHTML
+	 *      0.3 fix inline/inline-block and br bug in HTMLtoCODE
+	 *      0.4 support white-space:pre except IE 678
+	 *      0.5 clear useless code
+	 *          remove jquery require
+	 *          fix CODEtoHTML whitespace convert to &nbsp;
+	 *          seperate tagParser
+	 *      0.5.1 number can be a tag name now, like: [h1]Title[/h1]
+	 */
+	 var CODE = (function () {
+		 
+		Util = {
+			/**
+			 * 删除空格及Html标记
+			 * @param {str} string object
+			 * @return {str} string object
+			 */
+			delHtmlTag: function (str){  
+				var temp = str.replace(/<[^>]+>/g,"");
+				var temp1 = temp.replace(/ /g,"");
+				return temp1;
+			 },
+			/**
+			 * 删除空格及Html标记
+			 * @param {str} string object
+			 * @return {str} string object
+			 */
+			delFontTag: function (str){  
+				var str = str.toLowerCase();				//小写字符
+				var temp = str.replace(/\s/g, "");			//去除空格
+				var temp1 = temp.replace(/<font>/g,"");		//删除<font>
+				var temp2 = temp1.replace(/<\/font>/g,"");	//删除<font>
+				return temp2;
+			 },
+			/**
+			 * 获取颜色/字体大小及文字
+			 * @param {str} string object
+			 * @return {str} string object
+			 */
+			getTextTag: function (str){  
+			
+				var result,
+					rtn = new Array(),
+					contents = new Array();
+				
+				var temp = str.replace(/\'/g,'\"');			//替换双引号
+				
+				const regContent = /\{(.*?)\}/g;			//查找格式内容				
+				const regText = /text=\"(.*?)\"/g;			//查找文本
+				const regColor = /color=\"(.*?)\"/g;		//查找颜色
+				const regFontsize = /font_size=(\d{1,2})/g; //查找字体
+				
+				//匹配所有大括号字符串
+				
+				if ((contents = regContent.exec(temp)) != null) {
+					content = contents[1];
+				}
+				
+				if ((result = regText.exec(content)) != null) {
+					rtn['txt'] = result[1];
+				}
+
+				if ((result = regColor.exec(content)) != null) {
+					rtn['color'] = result[1];
+				}
+
+				if ((result = regFontsize.exec(content)) != null) {
+					rtn['font-size'] = result[1];
+				}
+				
+				return rtn;
+			 },
+			/**
+			 * 获取颜色/字体大小及文字
+			 * @param {str} string object
+			 * @return {str} string object
+			 */
+			mergeTag: function (arr){  
+				return "";
+			}
+		};
+		/**
+		 *  var ubbParser = new UBB();
+		 *  @param {object} setting
+		 */
+		function CODE() {
+		}
+		/**
+		 * Util.extend(obj, {newMethod: 'a'});
+		 * @param {object} object
+		 * @param {object} source
+		 */
+		CODE.prototype.extend = function(object, source) {
+			var method;
+			for (method in source) {
+				if (source.hasOwnProperty(method)) {
+					object[method] = source[method];
+				}
+			}
+		};
+		/**
+		 * add or modify tags
+		 * @param {object} tags
+		 */
+		CODE.prototype.addTags = function(tags) {
+			CODE.extend(tagsParser, tags);
+		};
+		/**
+		 * obj = Util.mix({method: 'b'}, {newMethod: 'a'});
+		 * @param {object} object
+		 * @param {object} object2
+		 * @return {object} newObject
+		 */
+		CODE.prototype.mix = function(object, object2) {
+			var method,
+				re = {};
+			CODE.extend(re, object);
+			CODE.extend(re, object2);
+			return re;
+		};
+		CODE.prototype.Util = Util;
+		
+		/**
+		 * parse ubb text into html text
+		 * @param {object} node
+		 * @param {object} setting
+		 * @param {object} state
+		 * @return {string} html text
+		 */
+		CODE.prototype.parseCode = function(ubb) {
+			return(ubb);
+		}
+		/**
+		 * @param {string} CODE text
+		 * @return {string} html text
+		 */
+		CODE.prototype.CODEtoHTML = function(ubb) {
+			var res = Util.delFontTag(ubb);
+			var res = Util.getTextTag(res);
+			return res;
+		};
+		return CODE;
+	})();
+	var parser = new CODE();
+	var res = parser.CODEtoHTML("<font>{text = '窗', color = '255,0,0', font_size = 20}</font>前明<br>月光吗？"); 
+	
+	console.log(res);
+	/**
+	 *	return Array():
+	 *	color :	"255,0,0"
+	 *	font-size : "20"
+	 *	txt : "窗"
+     */		
+
+	
+  </script>
+ </body>
+</html>
