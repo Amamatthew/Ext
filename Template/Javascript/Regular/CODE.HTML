@@ -13,18 +13,116 @@
 	 * CODE
 	 * @author mzhou / @zhoumm
 	 * @log 0.1 finish HTMLtoCODE
-	 *      0.2 finish CODEtoHTML
+	 *      0.2 finish CodePrase
 	 *      0.3 fix inline/inline-block and br bug in HTMLtoCODE
 	 *      0.4 support white-space:pre except IE 678
 	 *      0.5 clear useless code
 	 *          remove jquery require
-	 *          fix CODEtoHTML whitespace convert to &nbsp;
+	 *          fix CodePrase whitespace convert to &nbsp;
 	 *          seperate tagParser
 	 *      0.5.1 number can be a tag name now, like: [h1]Title[/h1]
 	 */
 	 var CODE = (function () {
 		 
 		Util = {
+			/**
+			 * 小写字符、删除空格、替换双引号
+			 * @param {str} string object
+			 * @return {str} string object
+			 */
+			formatTag: function (str){  
+				var str = str.toLowerCase();				//小写字符
+				var temp = str.replace(/\s/g, "");			//去除空格
+				return temp.replace(/\'/g,'\"');			//替换双引号
+			 },
+			 
+			/**
+			 * 删除<font>标记
+			 * @param {str} string object
+			 * @return {str} string object
+			 */
+			delFontTag: function (str){ 
+				var temp = str.replace(/<font>/g,"");		//删除<font>
+				return temp.replace(/<\/font>/g,"");		//删除<font>
+			 },
+			 
+			/**
+			 * 获取颜色/字体大小及文字
+			 * @param {str} string object
+			 * @return {str} string object
+			 */
+			getTextTag: function (content){  
+			
+				var result,
+					rtn = new Array(),
+					contents = new Array();
+				
+				const regText = /text=\"(.*?)\"/g;			//查找文本
+				const regColor = /color=\"(.*?)\"/g;		//查找颜色
+				const regFontsize = /font_size=(\d{1,2})/g; //查找字体
+				
+				//匹配所有大括号字符串
+				if ((result = regText.exec(content)) != null) {
+					rtn['text'] = result[1];
+				}
+
+				if ((result = regColor.exec(content)) != null) {
+					rtn['color'] = result[1];
+				}
+
+				if ((result = regFontsize.exec(content)) != null) {
+					rtn['font_size'] = result[1];
+				}
+				return rtn;
+			 },
+
+			/**
+			 * 获取颜色/字体大小及文字
+			 * @param {str} string object
+			 * @return {str} string object
+			 */
+			mergeTag: function (arr){
+			
+				var word = arr.hasOwnProperty('text')?arr['text']:'';
+				var color = arr.hasOwnProperty('color')?arr['color']:null;
+				var font_size = arr.hasOwnProperty('font_size')?arr['font_size']:null;
+				
+				if(''!=word){ 
+				
+					var str = '<span style="';
+					
+					if(null!=font_size){
+						str += "font-size:" + font_size + "px;";
+					}
+					
+					if(null!=color){
+						str += "color:rgb(" + color + ")" + '";';
+					}else{
+						str += '"';
+					}
+					str += ">" +word+"</span>";
+				}
+				return (str);
+			},
+			
+			/**
+			 * parse ubb text into html text
+			 * @param {object} node
+			 * @param {object} setting
+			 * @param {object} state
+			 * @return {string} html text
+			 */
+			parseCode: function(str) {
+				const reg = /\{(.*?)\}/g;					//查找格式内容	
+				var res = str.replace(reg, 
+					function(word){
+						var arr = Util.getTextTag(word);
+						return Util.mergeTag(arr);
+					}
+				);
+				return res;
+			},
+			
 			/**
 			 * 删除空格及Html标记
 			 * @param {str} string object
@@ -34,72 +132,14 @@
 				var temp = str.replace(/<[^>]+>/g,"");
 				var temp1 = temp.replace(/ /g,"");
 				return temp1;
-			 },
-			/**
-			 * 删除空格及Html标记
-			 * @param {str} string object
-			 * @return {str} string object
-			 */
-			delFontTag: function (str){  
-				var str = str.toLowerCase();				//小写字符
-				var temp = str.replace(/\s/g, "");			//去除空格
-				var temp1 = temp.replace(/<font>/g,"");		//删除<font>
-				var temp2 = temp1.replace(/<\/font>/g,"");	//删除<font>
-				return temp2;
-			 },
-			/**
-			 * 获取颜色/字体大小及文字
-			 * @param {str} string object
-			 * @return {str} string object
-			 */
-			getTextTag: function (str){  
-			
-				var result,
-					rtn = new Array(),
-					contents = new Array();
-				
-				var temp = str.replace(/\'/g,'\"');			//替换双引号
-				
-				const regContent = /\{(.*?)\}/g;			//查找格式内容				
-				const regText = /text=\"(.*?)\"/g;			//查找文本
-				const regColor = /color=\"(.*?)\"/g;		//查找颜色
-				const regFontsize = /font_size=(\d{1,2})/g; //查找字体
-				
-				//匹配所有大括号字符串
-				
-				if ((contents = regContent.exec(temp)) != null) {
-					content = contents[1];
-				}
-				
-				if ((result = regText.exec(content)) != null) {
-					rtn['txt'] = result[1];
-				}
-
-				if ((result = regColor.exec(content)) != null) {
-					rtn['color'] = result[1];
-				}
-
-				if ((result = regFontsize.exec(content)) != null) {
-					rtn['font-size'] = result[1];
-				}
-				
-				return rtn;
-			 },
-			/**
-			 * 获取颜色/字体大小及文字
-			 * @param {str} string object
-			 * @return {str} string object
-			 */
-			mergeTag: function (arr){  
-				return "";
-			}
+			 }
 		};
 		/**
-		 *  var ubbParser = new UBB();
-		 *  @param {object} setting
+		 *  var parser = new CODE();
+		 *  @return {object}
 		 */
-		function CODE() {
-		}
+		function CODE() {}
+		
 		/**
 		 * Util.extend(obj, {newMethod: 'a'});
 		 * @param {object} object
@@ -113,13 +153,7 @@
 				}
 			}
 		};
-		/**
-		 * add or modify tags
-		 * @param {object} tags
-		 */
-		CODE.prototype.addTags = function(tags) {
-			CODE.extend(tagsParser, tags);
-		};
+
 		/**
 		 * obj = Util.mix({method: 'b'}, {newMethod: 'a'});
 		 * @param {object} object
@@ -133,41 +167,27 @@
 			CODE.extend(re, object2);
 			return re;
 		};
-		CODE.prototype.Util = Util;
 		
-		/**
-		 * parse ubb text into html text
-		 * @param {object} node
-		 * @param {object} setting
-		 * @param {object} state
-		 * @return {string} html text
-		 */
-		CODE.prototype.parseCode = function(ubb) {
-			return(ubb);
-		}
 		/**
 		 * @param {string} CODE text
 		 * @return {string} html text
 		 */
-		CODE.prototype.CODEtoHTML = function(ubb) {
-			var res = Util.delFontTag(ubb);
-			var res = Util.getTextTag(res);
+		CODE.prototype.CodePrase = function(ubb) {
+			var res = Util.formatTag(ubb);
+			var res = Util.delFontTag(res);		//删除<font>标签
+			var res = Util.parseCode(res);		//解析内容
 			return res;
 		};
+		
 		return CODE;
 	})();
+	
 	var parser = new CODE();
-	var res = parser.CODEtoHTML("<font>{text = '窗', color = '255,0,0', font_size = 20}</font>前明<br>月光吗？"); 
+	var res = parser.CodePrase("<font>{text = '窗', color = '255,0,0', font_size = 20}</font>前明<br>月光吗？"); 
+		console.log(res);		//<span style="font-size:20px;color:rgb(255,0,0)";>窗</span>前明<br>月光吗？		
 	
-	console.log(res);
-	/**
-	 *	return Array():
-	 *	color :	"255,0,0"
-	 *	font-size : "20"
-	 *	txt : "窗"
-     */		
-
-	
+	var res = parser.CodePrase("<font>{text = '窗', color = '255,0,0', font_size = 20}</font><font>{text = '窗', color = '255,255,0', font_size = 20}</font>之前明<br>月光吗？"); 
+		console.log(res);		//<span style="font-size:20px;color:rgb(255,0,0)";>窗</span><span style="font-size:20px;color:rgb(255,255,0)";>窗</span>之前明<br>月光吗？
   </script>
  </body>
 </html>
