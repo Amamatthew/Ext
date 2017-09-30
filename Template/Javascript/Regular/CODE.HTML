@@ -135,7 +135,7 @@
 			 * @param {str} string object
 			 * @return {str} string object
 			 */
-			hasChineseQuotationMarks: function (str){
+			hasChineseQuotation: function (str){
 				return (str.search(/(‘|’)/g)>=0||str.search(/(“|”)/g)>=0)?true:false;
 			},
 			
@@ -164,7 +164,7 @@
 		 */
 		CODE.prototype.CodePrase = function(ubb) {
 			
-			if(Util.hasChineseQuotationMarks(ubb)){	
+			if(Util.hasChineseQuotation(ubb)){	
 				alert('提示：文字/代码当中发现中文引号！');
 			}
 			var res = Util.formatTag(ubb);
