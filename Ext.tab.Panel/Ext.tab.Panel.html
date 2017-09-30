@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	   <meta charset="UTF-8" />
+	   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+       <title>Welcome to Ext JS!</title>
+	   <meta name="viewport" content="width=device-width, initial-scale=1">
+       <link  href="https://cdn.bootcss.com/extjs/6.2.0/classic/theme-crisp/resources/theme-crisp-all.css" rel="stylesheet">
+       <script src="https://cdn.bootcss.com/extjs/6.2.0/ext-all.js"></script> 
+       <script src="https://cdn.bootcss.com/extjs/6.2.0/classic/theme-crisp/theme-crisp.js"></script>
+	   <script src="https://cdn.bootcss.com/extjs/6.2.0/classic/locale/locale-zh_CN.js"></script>
+	   <style></style>
+       <script type="text/javascript">
+		Ext.onReady(function(){
+					win = Ext.create('Ext.window.Window', {
+							title: '预览格式',
+							modal: true,
+							width: 500,
+							height: 400,
+							resizable: false,			//尺寸固定
+							closeAction: 'destroy', 	//关闭销毁
+							defaults: {
+								bodyPadding: 10,
+								scrollable: true
+							},
+							items:[{
+								xtype:  'tabpanel',
+								items: [{
+										tabConfig: {
+											title: '正文',
+											tooltip: '邮件内容格式预览'											
+										},
+										html: '<span style="font-size:20px;color:rgb(255,0,0)";>窗</span><span style="font-size:20px;color:rgb(255,0,255)";>窗</span>之前明<br>月光吗？'
+									}, {
+										tabConfig: {
+											title: '源码',
+											tooltip: '邮件内容预览'
+										},
+										html: '<pre>'+Ext.String.htmlEncode ('<span style="font-size:20px;color:rgb(255,0,0)";>窗</span><span style="font-size:20px;color:rgb(255,0,255)";>窗</span>之前明<br>月光吗？')+'</pre>'
+									}]
+							}],
+							buttons:[
+							{
+								text : '取消',
+								handler:  function(button){
+									button.up('window').down('tabpanel').destroy();
+									button.up('window').destroy();
+								}
+							},{
+								text: '确定',
+								handler: function(button){
+									button.up('window').down('tabpanel').destroy();
+									button.up('window').destroy();
+								}
+							}]
+						}).show();	  
+		});
+        </script>
+    </head>
+    <body></body>
+</html>

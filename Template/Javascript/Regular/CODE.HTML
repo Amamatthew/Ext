@@ -11,16 +11,10 @@
   <script type="text/javascript">
 	/**
 	 * CODE
-	 * @author mzhou / @zhoumm
-	 * @log 0.1 finish HTMLtoCODE
-	 *      0.2 finish CodePrase
-	 *      0.3 fix inline/inline-block and br bug in HTMLtoCODE
-	 *      0.4 support white-space:pre except IE 678
-	 *      0.5 clear useless code
-	 *          remove jquery require
-	 *          fix CodePrase whitespace convert to &nbsp;
-	 *          seperate tagParser
-	 *      0.5.1 number can be a tag name now, like: [h1]Title[/h1]
+	 * @author amamatthew / @xm
+	 * @log 0.1 finish CODEtoHTML
+		var res = parser.CodePrase("<font>{text = '窗', color = '255,0,0', font_size = 20}</font><font>{text = '窗', color = '255,255,0', font_size = 20}</font>之前明<br>月光吗？"); 
+		console.log(res);	//<span style="font-size:20px;color:rgb(255,0,0)";>窗</span><span style="font-size:20px;color:rgb(255,255,0)";>窗</span>之前明<br>月光吗？
 	 */
 	 var CODE = (function () {
 		 
@@ -30,10 +24,10 @@
 			 * @param {str} string object
 			 * @return {str} string object
 			 */
-			formatTag: function (str){  
-				var str = str.toLowerCase();				//小写字符
-				var temp = str.replace(/\s/g, "");			//去除空格
-				return temp.replace(/\'/g,'\"');			//替换双引号
+			formatTag: function (str){
+				var str = str.trimRight();			//删右侧空格
+					str = str.toLowerCase();		//小写字符
+					return str.replace(/\'/g,'\"');	//单引换双引
 			 },
 			 
 			/**
@@ -113,10 +107,11 @@
 			 * @return {string} html text
 			 */
 			parseCode: function(str) {
-				const reg = /\{(.*?)\}/g;					//查找格式内容	
+				const reg = /\{(.*?)\}/g;		//查找{}内匹配内容	
 				var res = str.replace(reg, 
 					function(word){
-						var arr = Util.getTextTag(word);
+						var temp = word.replace(/\s/g, "");	//去除空格
+						var arr = Util.getTextTag(temp);
 						return Util.mergeTag(arr);
 					}
 				);
@@ -124,15 +119,38 @@
 			},
 			
 			/**
-			 * 删除空格及Html标记
+			 * 删除文字右侧空格及Html标记
 			 * @param {str} string object
 			 * @return {str} string object
 			 */
-			delHtmlTag: function (str){  
-				var temp = str.replace(/<[^>]+>/g,"");
-				var temp1 = temp.replace(/ /g,"");
-				return temp1;
-			 }
+			delHtmlTag: function (str){
+				var _str = str.trimRight();			//删右侧空格
+				var temp = _str.replace(/<[^>]+>/g,"");
+				//temp = temp.replace(/ /g,"");
+				return temp;
+			},
+			
+			/**
+			 * 判断是否存在中文特殊字符{单双引号}
+			 * @param {str} string object
+			 * @return {str} string object
+			 */
+			hasChineseQuotationMarks: function (str){
+				return (str.search(/(‘|’)/g)>=0||str.search(/(“|”)/g)>=0)?true:false;
+			},
+			
+			/**
+			 * HTML格式字符转换
+			 * @param {str} string object
+			 * @return {str} string object
+			 */
+			countCode: function(ubb) {
+				var res = Util.formatTag(ubb);
+					res = Util.delFontTag(res);		//删除<font>标签
+					res = Util.parseCode(res);		//解析内容
+					res = Util.delHtmlTag(res);
+					return res.length;
+			}
 		};
 		/**
 		 *  var parser = new CODE();
@@ -141,42 +159,27 @@
 		function CODE() {}
 		
 		/**
-		 * Util.extend(obj, {newMethod: 'a'});
-		 * @param {object} object
-		 * @param {object} source
+		 * @param {string} CODE text
+		 * @return {string} html text
 		 */
-		CODE.prototype.extend = function(object, source) {
-			var method;
-			for (method in source) {
-				if (source.hasOwnProperty(method)) {
-					object[method] = source[method];
-				}
+		CODE.prototype.CodePrase = function(ubb) {
+			
+			if(Util.hasChineseQuotationMarks(ubb)){	
+				alert('提示：文字/代码当中发现中文引号！');
 			}
-		};
-
-		/**
-		 * obj = Util.mix({method: 'b'}, {newMethod: 'a'});
-		 * @param {object} object
-		 * @param {object} object2
-		 * @return {object} newObject
-		 */
-		CODE.prototype.mix = function(object, object2) {
-			var method,
-				re = {};
-			CODE.extend(re, object);
-			CODE.extend(re, object2);
-			return re;
+			var res = Util.formatTag(ubb);
+			var res = Util.delFontTag(res);		//删除<font>标签
+			var res = Util.parseCode(res);		//解析内容
+			return res;
 		};
 		
 		/**
 		 * @param {string} CODE text
 		 * @return {string} html text
 		 */
-		CODE.prototype.CodePrase = function(ubb) {
-			var res = Util.formatTag(ubb);
-			var res = Util.delFontTag(res);		//删除<font>标签
-			var res = Util.parseCode(res);		//解析内容
-			return res;
+		CODE.prototype.CountCharWithoutStyle = function(ubb) {
+			
+			return Util.countCode(ubb);
 		};
 		
 		return CODE;
