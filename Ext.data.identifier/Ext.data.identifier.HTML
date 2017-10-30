@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	   <meta charset="UTF-8" />
+	   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+       <title>Welcome to Ext JS!</title>
+	   <meta name="viewport" content="width=device-width, initial-scale=1">
+       <link  href="https://cdn.bootcss.com/extjs/6.2.0/classic/theme-crisp/resources/theme-crisp-all.css" rel="stylesheet">
+       <script src="https://cdn.bootcss.com/extjs/6.2.0/ext-all.js"></script> 
+       <script src="https://cdn.bootcss.com/extjs/6.2.0/classic/theme-crisp/theme-crisp.js"></script>
+	   <script src="https://cdn.bootcss.com/extjs/6.2.0/classic/locale/locale-zh_CN.js"></script>
+	   <style></style>
+       <script type="text/javascript">
+		Ext.onReady(function(){
+			
+			//自定义序号
+			Ext.define('App.data.MyModel', {
+				extend: 'Ext.data.Model',
+				identifier: {
+					type: 'sequential',
+					prefix: 'ID_',
+					seed: 1000,
+					increment: 10
+				}
+			});
+			var cuid = Ext.create('App.data.MyModel',{
+			
+			});
+			console.log(cuid.getData().id);	//{id: "5e96c608-efd8-4637-8569-e1e81cce7a83"}
+				
+			// uuid 使用 rfc4122.txt 协议生成
+			var uuid = Ext.create('Ext.data.identifier.Uuid',{
+
+			});
+
+			// 调用
+			console.log(uuid.generate());
+			console.log(uuid.generate());
+			console.log(uuid.generate());
+
+			//顺序
+			var suid = Ext.create('Ext.data.identifier.Sequential',{
+
+			});
+
+			console.log(suid.generate());
+			console.log(suid.generate());
+			console.log(suid.generate());
+
+			//负值
+			var nuid = Ext.create('Ext.data.identifier.Negative',{
+
+			});
+
+			console.log(nuid.generate());
+			console.log(nuid.generate());
+			console.log(nuid.generate());
+		});
+        </script>
+    </head>
+    <body></body>
+</html>
