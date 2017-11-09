@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	   <meta charset="UTF-8" />
+	   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+       <title>Welcome to Ext JS!</title>
+	   <meta name="viewport" content="width=device-width, initial-scale=1">
+       <link  href="https://cdn.bootcss.com/extjs/6.2.0/classic/theme-crisp/resources/theme-crisp-all.css" rel="stylesheet">
+       <script src="https://cdn.bootcss.com/extjs/6.2.0/ext-all.js"></script> 
+       <script src="https://cdn.bootcss.com/extjs/6.2.0/classic/theme-crisp/theme-crisp.js"></script>
+	   <script src="https://cdn.bootcss.com/extjs/6.2.0/classic/locale/locale-zh_CN.js"></script>
+	   <style></style>
+       <script type="text/javascript">
+		Ext.onReady(function(){
+			var states = Ext.create('Ext.data.Store', {
+				fields: ['abbr', 'name'],
+				data : [
+					{"abbr":"AL", "name":"Alabama"},
+					{"abbr":"AK", "name":"Alaska"},
+					{"abbr":"AZ", "name":"Arizona"}
+				]
+			});
+
+			Ext.create('Ext.form.ComboBox', {
+				fieldLabel: 'Choose State',
+				store: states,
+				queryMode: 'local',
+				valueField: 'abbr',
+				renderTo: Ext.getBody(),
+				// Template for the dropdown menu.
+				// Note the use of the "x-list-plain" and "x-boundlist-item" class,
+				// this is required to make the items selectable.
+				tpl: Ext.create('Ext.XTemplate',
+					'<ul class="x-list-plain"><tpl for=".">',
+						'<li role="option" class="x-boundlist-item">{abbr} - {name}</li>',
+					'</tpl></ul>'
+				),
+				// template for the content inside text field
+				displayTpl: Ext.create('Ext.XTemplate',
+					'<tpl for=".">',
+						'{abbr} - {name}',
+					'</tpl>'
+				)
+			});
+		});
+        </script>
+    </head>
+    <body></body>
+</html>
