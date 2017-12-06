@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	   <meta charset="UTF-8" />
+	   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+       <title>Welcome to Ext JS!</title>
+	   <meta name="viewport" content="width=device-width, initial-scale=1">
+       <link  href="https://cdn.bootcss.com/extjs/6.2.0/classic/theme-crisp/resources/theme-crisp-all.css" rel="stylesheet">
+       <script src="https://cdn.bootcss.com/extjs/6.2.0/ext-all.js"></script> 
+       <script src="https://cdn.bootcss.com/extjs/6.2.0/classic/theme-crisp/theme-crisp.js"></script>
+	   <script src="https://cdn.bootcss.com/extjs/6.2.0/classic/locale/locale-zh_CN.js"></script>
+	   <style></style>
+       <script type="text/javascript">
+        Ext.onReady(function () {
+            Ext.MessageBox.show({
+                title: "提示",
+                msg: "三个按钮、一个多行文本域",
+                modal: true,
+                prompt: true,
+                value: "请输入",
+                fn: function (id, msg) {
+                    Ext.MessageBox.alert("单击的按钮id是:" + id + "\n" + "输入的内容是:" + msg);
+                },
+                buttons: Ext.Msg.YESNOCANCEL,
+                icon: Ext.Msg.QUEATION
+            });
+		});
+        </script>
+    </head>
+    <body></body>
+</html>
