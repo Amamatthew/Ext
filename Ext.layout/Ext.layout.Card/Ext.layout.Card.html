@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Welcome to Ext JS!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.bootcss.com/extjs/6.2.0/classic/theme-crisp/resources/theme-crisp-all.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/extjs/6.2.0/ext-all.js"></script>
+    <script src="https://cdn.bootcss.com/extjs/6.2.0/classic/theme-crisp/theme-crisp.js"></script>
+    <script src="https://cdn.bootcss.com/extjs/6.2.0/classic/locale/locale-zh_CN.js"></script>
+    <style></style>
+    <script type="text/javascript">
+    var panel;
+    Ext.onReady(function() {
+        panel = Ext.create('Ext.Panel', {
+            defaultListenerScope: true,
+            width: 500,
+            height: 400,
+            layout: 'card',
+            items: [{
+                    id: 'card-0',
+                    html: "First Item"
+                },
+                {
+                    id: 'card-1',
+                    html: "Second Item"
+                },
+                {
+                    id: 'card-2',
+                    html: "Third Item"
+                },
+                {
+                    id: 'card-3',
+                    html: "Fourth Item"
+                }
+            ],
+            renderTo: Ext.getBody(),
+            buttons: [{
+                    text: "上一页",
+                    disabled: true,
+                    itemId: 'card-prev',
+                    handler: 'changePage'
+                },
+
+                {
+                    text: "下一页",
+                    itemId: 'card-next',
+                    handler: 'changePage'
+                }
+            ],
+
+            changePage: function(btn) {
+                var me = this;
+                var index = Number(this.layout.activeItem.id.split('card-')[1]);
+                if (btn.text == "上一页") {
+                    index -= 1;
+                    if (index < 0) index = 0;
+                } else {
+                    index += 1;
+                    if (index > 3) index = 3;
+                }
+                panel.layout.setActiveItem(index);
+                me.down('#card-prev').setDisabled(index === 0);
+                me.down('#card-next').setDisabled(index === 3);
+            }
+        });
+
+        //panel.setActiveItem(1);
+    });
+    </script>
+</head>
+
+<body></body>
+
+</html>
